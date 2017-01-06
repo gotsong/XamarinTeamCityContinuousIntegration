@@ -35,5 +35,7 @@
 		<string>Icon</string>
 		<string>Icon-Small</string>
 	</array>
+	<key>CFBundleName</key>
+	<string>Todo</string>
 </dict>
 </plist>

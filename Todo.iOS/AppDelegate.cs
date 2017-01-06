@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using Todo;
 using Xamarin.Forms;
 using System.IO;
@@ -38,7 +38,7 @@ namespace Todo
 			window.MakeKeyAndVisible ();
 
 			//#if DEBUG
-			Xamarin.Calabash.Start();
+			//Xamarin.Calabash.Start();
 			//#endif
 
 			return true;

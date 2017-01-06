@@ -2,13 +2,12 @@
 #load "build-helpers.fsx"
 
 open Fake
-open BuildHelpers
 
 
 Target "common-build" (fun () ->
-    RestorePackages "TodoPCL.sln"
+    RestorePackages “TodoPCL.sln”
 
-    MSBuild "Todo/bin/Debug" "Build" [ ("Configuration", "Debug"); ("Platform", "Any CPU") ] [ "TodoPCL.sln" ] |> ignore
+    MSBuild "Todo/bin/Debug" "Build" [ ("Configuration", "Debug"); ("Platform", "Any CPU”) ] [ "TodoPCL.sln" ] |> ignore
 )
 
 
