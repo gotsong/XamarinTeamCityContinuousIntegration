@@ -18,3 +18,21 @@ let RestorePackages solutionFile =
 let RunNUnitTests dllPath xmlPath =
     Exec "/Library/Frameworks/Mono.framework/Versions/Current/bin/nunit-console4" (dllPath + " -xml=" + xmlPath) 
     TeamCityHelper.sendTeamCityNUnitImport xmlPath
+
+let RunUITests appPath =
+    let testAppFolder = Path.Combine("TodoPCL.UITests", "testapps")
+
+    if Directory.Exists(testAppFolder) then Directory.Delete(testAppFolder, true)
+    Directory.CreateDirectory(testAppFolder) |> ignore
+
+    let testAppPath = Path.Combine(testAppFolder, DirectoryInfo(appPath).Name)
+
+    Directory.Move(appPath, testAppPath)
+
+    RestorePackages "TodoPCL.UITests/TodoPCL.UITests.csproj"
+
+    MSBuild "TodoPCL.UITests/bin/Release" "Build" [ ("Configuration", "Release"); ("Platform", "Any CPU") ] [ "TodoPCL.UITests/TodoPCL.UITests.csproj" ] |> ignore
+
+    RunNUnitTests "TodoPCL.UITests/bin/Release/TodoPCL.UITests.dll" "TodoPCL.UITests/bin/Release/testresults.xml"
+
+
