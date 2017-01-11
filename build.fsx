@@ -55,7 +55,16 @@ Target "android-uitests" (fun () ->
     RunUITests appPath
 )
 
+Target "ios-build" (fun () ->
+    RestorePackages "TodoPCL.iOS.sln"
 
+    iOSBuild (fun defaults ->
+        {defaults with
+            ProjectPath = "TodoPCL.iOS.sln"
+            Configuration = "Debug"
+            Target = "Build"
+        })
+)
 
 "common-build"
   ==> "common-tests"
