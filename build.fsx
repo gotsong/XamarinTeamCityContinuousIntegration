@@ -36,7 +36,7 @@ Target "android-package" (fun () ->
     |> AndroidSignAndAlign (fun defaults ->
         {defaults with 
             KeystorePath = "todo.keystore"
-            KeystorePassword = Environment.GetEnvironmentVariable(“TodoKeystorePassword”)
+            KeystorePassword = Environment.GetEnvironmentVariable("TodoKeystorePassword")
             KeystoreAlias = "Todo"
         })
    |> fun file -> TeamCityHelper.PublishArtifact file.FullName
