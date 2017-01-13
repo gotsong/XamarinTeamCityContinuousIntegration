@@ -61,8 +61,9 @@ Target "ios-build" (fun () ->
     iOSBuild (fun defaults ->
         {defaults with
             ProjectPath = "TodoPCL.iOS.sln"
-            Configuration = "Debug"
+            Configuration = "Debug"            
             Target = "Build"
+            Platform = "iPhoneSimulator"
         })
 )
 
@@ -121,5 +122,8 @@ Target "ios-uitests" (fun () ->
 "android-build"
   ==> "android-package"
   ==> "android-uitests"
+  
+"ios-build"
+  ==> "ios-uitests"
 
 RunTargetOrDefault "common-tests"

@@ -40,7 +40,8 @@
     <ConsolePause>false</ConsolePause>
     <CodesignEntitlements></CodesignEntitlements>
     <AssemblyName>TodoiOS</AssemblyName>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>iPhone Developer: james@core10.io (W694EAL254)</CodesignKey>
+    <CodesignProvision>372d4792-2c24-44dd-8755-442131d80a49</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
     <DebugType></DebugType>
@@ -68,8 +69,8 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <CodesignEntitlements></CodesignEntitlements>
-    <CodesignProvision>Automatic:AppStore</CodesignProvision>
-    <CodesignKey>iPhone Distribution</CodesignKey>
+    <CodesignProvision>372d4792-2c24-44dd-8755-442131d80a49</CodesignProvision>
+    <CodesignKey>iPhone Developer: james@core10.io (W694EAL254)</CodesignKey>
     <AssemblyName>QuickTodoiOS</AssemblyName>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
   </PropertyGroup>
@@ -152,6 +153,9 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\packages\Xamarin.Forms.2.3.3.180\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="Calabash">
+      <HintPath>..\Components\calabash-11.4\lib\ios-unified\Calabash.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
