@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Todo</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.ansuria.todo</string>
+	<string>com.xamarin.core10.todo</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>

@@ -66,6 +66,55 @@ Target "ios-build" (fun () ->
         })
 )
 
+Target "ios-adhoc" (fun () ->
+    RestorePackages "TodoPCL.iOS.sln"
+
+    iOSBuild (fun defaults ->
+        {defaults with
+            ProjectPath = "TodoPCL.iOS.sln"
+            Configuration = "Ad-Hoc"
+            Target = "Build"
+            Platform = "iPhone"
+            BuildIpa = true
+        })
+
+    let appPath = Directory.EnumerateFiles(Path.Combine("Todo.iOS", "bin", "iPhone", "Ad-Hoc"), "*.ipa", SearchOption.AllDirectories).First()
+
+    TeamCityHelper.PublishArtifact appPath
+)
+
+Target "ios-appstore" (fun () ->
+    RestorePackages "TodoPCL.iOS.sln"
+
+    iOSBuild (fun defaults ->
+        {defaults with
+            ProjectPath = "TodoPCL.iOS.sln"
+            Configuration = "AppStore"
+            Target = "Build"
+            Platform = "iPhone"
+            BuildIpa = true
+        })
+
+    let outputFolder = Path.Combine("Todo.iOS", "bin", "iPhone", "AppStore")
+
+    let appPath = Directory.EnumerateDirectories(outputFolder, "*.app").First()
+
+    let zipFilePath = Path.Combine(outputFolder, "Todo.iOS.zip")
+
+    let zipArgs = String.Format("-r -y '{0}' '{1}'", zipFilePath, appPath)
+
+    Exec "zip" zipArgs
+
+    TeamCityHelper.PublishArtifact zipFilePath
+
+)
+
+Target "ios-uitests" (fun () ->
+   let appPath = Directory.EnumerateDirectories(Path.Combine("Todo.iOS", "bin", "iPhoneSimulator", "Debug"), "*.app").First()
+
+   RunUITests appPath
+)
+
 "common-build"
   ==> "common-tests"
 
