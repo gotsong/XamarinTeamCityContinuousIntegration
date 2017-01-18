@@ -1,5 +1,6 @@
 #r @"packages/FAKE/tools/FakeLib.dll"
 #load "build-helpers.fsx"
+#load "HockeyAppHelper.fsx"
 
 open Fake
 open System
@@ -7,6 +8,7 @@ open System.IO
 open System.Linq
 open BuildHelpers
 open Fake.XamarinHelper
+open HockeyAppHelper
 
 Target "common-build" (fun () ->
     RestorePackages "ToDoPCL.sln"
@@ -36,7 +38,7 @@ Target "android-package" (fun () ->
     |> AndroidSignAndAlign (fun defaults ->
         {defaults with 
             KeystorePath = "todo.keystore"
-            KeystorePassword = Environment.GetEnvironmentVariable("TodoKeystorePassword")
+            KeystorePassword = Environment.GetEnvironmentVariable("TodoKeystorePassword")            
             KeystoreAlias = "Todo"
         })
    |> fun file -> TeamCityHelper.PublishArtifact file.FullName
@@ -116,14 +118,37 @@ Target "ios-uitests" (fun () ->
    RunUITests appPath
 )
 
+Target "android-hockeyapp" (fun () ->
+    let buildCounter = BuildHelpers.GetBuildCounter TeamCityHelper.TeamCityBuildNumber
+
+    let hockeyAppApiToken = Environment.GetEnvironmentVariable("HockeyAppApiToken")
+
+    let appPath = Directory.EnumerateFiles(Path.Combine( "Todo.Android", "bin", "Release"), "*.apk", SearchOption.AllDirectories).First()
+
+    HockeyAppHelper.Upload hockeyAppApiToken appPath buildCounter
+)
+
+Target "ios-hockeyapp" (fun () ->
+    let buildCounter = BuildHelpers.GetBuildCounter TeamCityHelper.TeamCityBuildNumber
+
+    let hockeyAppApiToken = Environment.GetEnvironmentVariable("HockeyAppApiToken")
+
+    let appPath = "'" + Directory.EnumerateFiles(Path.Combine("Todo.iOS", "bin", "iPhone", "Ad-hoc"), "*.ipa", SearchOption.AllDirectories).Last() + "'"
+    
+    HockeyAppHelper.Upload hockeyAppApiToken appPath buildCounter
+)
+
 "common-build"
   ==> "common-tests"
 
 "android-build"
   ==> "android-package"
   ==> "android-uitests"
-  
+  ==> "android-hockeyapp"
+
 "ios-build"
+  ==> "ios-adhoc"
   ==> "ios-uitests"
+  ==> "ios-hockeyapp"
 
 RunTargetOrDefault "common-tests"

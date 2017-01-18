@@ -35,4 +35,7 @@ let RunUITests appPath =
 
     RunNUnitTests "TodoPCL.UITests/bin/Release/TodoPCL.UITests.dll" "TodoPCL.UITests/bin/Release/testresults.xml"
 
-
+let GetBuildCounter (str:Option<string>) =
+    match str with
+    | Some(v) -> v
+    | None -> "Local"
